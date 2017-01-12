@@ -1,28 +1,17 @@
 /**
  *  Nest Protect
- *	Authors: Anthony S. (@tonesto7), Ben W. (@desertblade), Eric S. (@E_Sch)
+ *	Author: Anthony S. (@tonesto7)
+ *	Co-Authors: Ben W. (@desertblade), Eric S. (@E_Sch)
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions: The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *	Copyright (C) 2017 Anthony S.
+ * 	Licensing Info: Located at https://raw.githubusercontent.com/tonesto7/nest-manager/master/LICENSE.md
  */
 
 import java.text.SimpleDateFormat
 
 preferences { }
 
-def devVer() { return "4.3.0" }
+def devVer() { return "4.4.0" }
 
 metadata {
 	definition (name: "${textDevName()}", author: "Anthony S.", namespace: "tonesto7") {
@@ -127,7 +116,7 @@ metadata {
 			state("default", label: 'Last Manual Test:\n${currentValue}')
 		}
 		standardTile("refresh", "device.refresh", width:2, height:2, decoration: "flat") {
-			state "default", label: 'refresh', action:"refresh.refresh", icon:"st.secondary.refresh-icon"
+			state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/tonesto7/nest-manager/master/Images/Devices/refresh_icon.png"
 		}
 		valueTile("lastUpdatedDt", "device.lastUpdatedDt", width: 4, height: 1, decoration: "flat", wordWrap: true) {
 			state("default", label: 'Data Last Received:\n${currentValue}')
@@ -747,12 +736,19 @@ def getInfoHtml() {
 				<script type="text/javascript" src="${getFileBase64("https://cdnjs.cloudflare.com/ajax/libs/vex-js/3.0.0/js/vex.combined.min.js", "text", "javascript")}"></script>
 
 				<link rel="stylesheet" href="${getFileBase64("https://cdnjs.cloudflare.com/ajax/libs/vex-js/3.0.0/css/vex.css", "text", "css")}" />
-				<link rel="stylesheet" href="${getFileBase64("https://cdnjs.cloudflare.com/ajax/libs/vex-js/3.0.0/css/vex-theme-top.css", "text", "css")}" />
-
+				<link rel="stylesheet" href="${getFileBase64("https://cdnjs.cloudflare.com/ajax/libs/vex-js/3.0.0/css/vex-theme-default.css", "text", "css")}" />
+				<script>vex.defaultOptions.className = 'vex-theme-default'</script>
 				<link rel="stylesheet prefetch" href="${getCssData()}"/>
+				<style>
+					.vex.vex-theme-default .vex-content {
+						width: 98%; padding: 3px;
+					}
+				</style>
 			</head>
 			<body>
 			  ${testModeHTML}
+			  ${clientBl}
+			  ${updateAvail}
 			  <div class="row">
 				<div class="offset-by-two four columns centerText">
 				  <img class='alarmImg' src="${getCarbonImg()}">
@@ -761,44 +757,64 @@ def getInfoHtml() {
 				  <img class='alarmImg' src="${getSmokeImg()}">
 				</div>
 			  </div>
-			  <table>
-				<col width="50%">
-				  <col width="50%">
-					<thead>
-					  <th>Network Status</th>
-					  <th>API Status</th>
-					</thead>
-					<tbody>
-					  <tr>
-						<td>${state?.onlineStatus.toString()}</td>
-						<td>${state?.apiStatus}</td>
-					  </tr>
-					</tbody>
-			  </table>
-			  <table>
-				<tr>
-				  <th>Firmware Version</th>
-				  <th>Debug</th>
-				  <th>Device Type</th>
-				</tr>
-				<td>v${state?.softwareVer.toString()}</td>
-				<td>${state?.debugStatus}</td>
-				<td>${state?.devTypeVer.toString()}</td>
-			  </table>
-			  <table>
-				<thead>
-				  <th>Nest Last Checked-In</th>
-				  <th>Data Last Received</th>
-				</thead>
-				<tbody>
-				  <tr>
-					<td class="dateTimeText">${state?.lastConnection.toString()}</td>
-					<td class="dateTimeText">${state?.lastUpdatedDt.toString()}</td>
-				  </tr>
-				</tbody>
-			  </table>
-              ${clientBl}
-			  ${updateAvail}
+				<br></br>
+				<table>
+				  <tbody>
+					<tr>
+					  <td><p class="centerText"><a class="more-info button">More Info</a></p></td>
+					</tr>
+				  </tbody>
+				</table>
+				<br></br>
+			  <script>
+				  \$('.more-info').click(function(){
+					  vex.dialog.alert({ unsafeMessage: `
+						  <table>
+							<col width="50%">
+							  <col width="50%">
+								<thead>
+								  <th>Network Status</th>
+								  <th>API Status</th>
+								</thead>
+								<tbody>
+								  <tr>
+									<td>${state?.onlineStatus.toString()}</td>
+									<td>${state?.apiStatus}</td>
+								  </tr>
+								</tbody>
+						  </table>
+						  <table>
+							<col width="40%">
+							<col width="20%">
+							<col width="40%">
+							<thead>
+							  <th>Firmware Version</th>
+							  <th>Debug</th>
+							  <th>Device Type</th>
+							</thead>
+							<tbody>
+							  <tr>
+								<td>v${state?.softwareVer.toString()}</td>
+							  	<td>${state?.debugStatus}</td>
+							  	<td>${state?.devTypeVer.toString()}</td>
+							  </tr>
+							</tbody>
+						  </table>
+						  <table>
+							<thead>
+							  <th>Nest Last Checked-In</th>
+							  <th>Data Last Received</th>
+							</thead>
+							<tbody>
+							  <tr>
+								<td class="dateTimeText">${state?.lastConnection.toString()}</td>
+								<td class="dateTimeText">${state?.lastUpdatedDt.toString()}</td>
+							  </tr>
+							</tbody>
+						  </table>
+				  	  `})
+			  	  });
+			  </script>
 			</body>
 		</html>
 		"""

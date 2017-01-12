@@ -6,7 +6,9 @@
         "stateVarVer": 2
     },
     "token": {
-        "tokenNum": 1
+        "id": "66f28a3c-9b5f-4678-b4d9-47b9687cd6fa",
+        "secret": "BHxtSbjUwVtKrRkLthxNlvpN7",
+        "tokenNum": 7
     },
     "broadcast": {
         "msgId": "",
@@ -21,22 +23,22 @@
         "setupVersion": 2,
         "versions": {
             "app": {
-                "ver": "4.3.1"
+                "ver": "4.4.1"
             },
             "thermostat": {
-                "ver": "4.3.0"
+                "ver": "4.4.0"
             },
             "protect": {
-                "ver": "4.3.0"
+                "ver": "4.4.0"
             },
             "camera": {
-                "ver": "2.3.0"
+                "ver": "2.4.0"
             },
             "presence": {
-                "ver": "4.3.0"
+                "ver": "4.4.0"
             },
             "weather": {
-                "ver": "4.3.0"
+                "ver": "4.4.0"
             }
         }
     },
